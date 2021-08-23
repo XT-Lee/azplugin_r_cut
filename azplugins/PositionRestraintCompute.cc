@@ -123,14 +123,24 @@ void PositionRestraintCompute::computeForces(unsigned int timestep)
 
         // termwise squaring for energy calculation
         const Scalar3 dr2 = make_scalar3(dr.x*dr.x, dr.y*dr.y, dr.z*dr.z);
+        
+        const Scalar dr2_0 = make_scalar(dr2.x+dr2.y+dr2.z);
+        if (dr2_0<=r2_cut )
+            const Scalar3 force = make_scalar3(-m_k.x*dr.x, -m_k.y*dr.y, -m_k.z*dr.z);
 
-        const Scalar3 force = make_scalar3(-m_k.x*dr.x, -m_k.y*dr.y, -m_k.z*dr.z);
+            // F = -k x, U = 0.5 kx^2
+            h_force.data[cur_p] = make_scalar4(force.x,
+                                               force.y,
+                                               force.z,
+                                               Scalar(0.5)*dot(m_k, dr2));
+        else
+            const Scalar3 force = make_scalar3(Scalar(0.0), Scalar(0.0), Scalar(0.0));
 
-        // F = -k x, U = 0.5 kx^2
-        h_force.data[cur_p] = make_scalar4(force.x,
-                                           force.y,
-                                           force.z,
-                                           Scalar(0.5)*dot(m_k, dr2));
+            // F = -k x, U = 0.5 kx^2
+            h_force.data[cur_p] = make_scalar4(force.x,
+                                               force.y,
+                                               force.z,
+                                               Scalar(0.0));
         }
     }
 
