@@ -35,7 +35,7 @@ __global__ void compute_position_restraint(Scalar4 *d_force,
                                            const Scalar4 *d_ref_pos,
                                            const unsigned int *d_tag,
                                            const Scalar3 k,
-                                           const Scalar3 rcut,
+                                           const Scalar rcut,
                                            const BoxDim box,
                                            const unsigned int N_mem)
     {
