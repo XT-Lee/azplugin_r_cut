@@ -342,7 +342,7 @@ class position(force._force):
         this warning can be safely ignored if the pressure (tensor) is not being logged or the pressure is not of interest.
 
     """
-    def __init__(self, group, k, name=""):
+    def __init__(self, group, k, r_cut, name=""):
         hoomd.util.print_status_line()
 
         # initialize the base class
@@ -358,10 +358,10 @@ class position(force._force):
         hoomd.context.current.system.addCompute(self.cpp_force, self.force_name)
 
         hoomd.util.quiet_status()
-        self.set_params(k=k)
+        self.set_params(k=k,r_cut=r_cut)
         hoomd.util.unquiet_status()
 
-    def set_params(self, k):
+    def set_params(self, k, r_cut):
         R""" Set the position restraint parameters.
 
         Args:
@@ -391,8 +391,8 @@ class position(force._force):
             except:
                 hoomd.context.msg.error('restrain.position.set_params: k must be composed of scalars\n')
                 raise ValueError('k must be composed of scalars')
-
-        self.cpp_force.setForceConstant(float(kx), float(ky), float(kz))
+                
+        self.cpp_force.setForceConstant(float(kx), float(ky), float(kz), float(r_cut))
 
     def set_reference_positions(self, ref_pos):
         R""" Set the reference positions for all particles.
