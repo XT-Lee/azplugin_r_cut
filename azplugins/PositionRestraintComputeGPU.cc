@@ -41,6 +41,7 @@ void PositionRestraintComputeGPU::computeForces(unsigned int timestep)
                                     d_ref_pos.data,
                                     d_tag.data,
                                     m_k,
+                                    m_rcut,
                                     m_pdata->getBox(),
                                     m_pdata->getN(),
                                     m_group->getNumMembers(),
