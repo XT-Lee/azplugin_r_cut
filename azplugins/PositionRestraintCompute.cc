@@ -24,7 +24,7 @@ PositionRestraintCompute::PositionRestraintCompute(std::shared_ptr<SystemDefinit
     GPUArray<Scalar4> ref_pos(m_pdata->getN(), m_exec_conf);
     m_ref_pos.swap(ref_pos);
 
-    setForceConstant(Scalar(0.0), Scalar(0.0), Scalar(0.0), Scalar(0.0));
+    setForceConstant(Scalar(0.0), Scalar(0.0), Scalar(0.0), Scalar(10000.0));
 
     // MPI is not supported (communication between ranks not implemented)
     #ifdef ENABLE_MPI
@@ -129,7 +129,7 @@ void PositionRestraintCompute::computeForces(unsigned int timestep)
         if (dr2_scalar < r2_cut)
             const Scalar3 force = make_scalar3(-m_k.x*dr.x, -m_k.y*dr.y, -m_k.z*dr.z);
 
-            // F = -k x, U = 0.5 kx^2
+            // F = -k x, U = 0.5 k x^2 where r < r_cut
             h_force.data[cur_p] = make_scalar4(force.x,
                                                force.y,
                                                force.z,
@@ -137,11 +137,11 @@ void PositionRestraintCompute::computeForces(unsigned int timestep)
         else
             const Scalar3 force = make_scalar3(Scalar(0.0), Scalar(0.0), Scalar(0.0));
 
-            // F = -k x, U = 0.5 kx^2
+            // F = 0, U = 0.5 k r_cut^2 where r >= r_cut
             h_force.data[cur_p] = make_scalar4(force.x,
                                                force.y,
                                                force.z,
-                                               Scalar(0.0));
+                                               Scalar(0.5)*m_k.x*m_rcut*m_rcut);
         }
     }
 
