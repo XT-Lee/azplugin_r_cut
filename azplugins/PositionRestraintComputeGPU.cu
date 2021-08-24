@@ -35,6 +35,7 @@ __global__ void compute_position_restraint(Scalar4 *d_force,
                                            const Scalar4 *d_ref_pos,
                                            const unsigned int *d_tag,
                                            const Scalar3 k,
+                                           const Scalar3 rcut,
                                            const BoxDim box,
                                            const unsigned int N_mem)
     {
@@ -58,11 +59,25 @@ __global__ void compute_position_restraint(Scalar4 *d_force,
     // termwise squaring for energy calculation
     const Scalar3 dr2 = make_scalar3(dr.x*dr.x, dr.y*dr.y, dr.z*dr.z);
 
-    // F = -k x, U = 0.5 kx^2
-    d_force[cur_p] = make_scalar4(-k.x*dr.x,
-                                  -k.y*dr.y,
-                                  -k.z*dr.z,
-                                  Scalar(0.5)*dot(k, dr2));
+    const Scalar dr2_scalar = dr2.x+dr2.y+dr2.z;
+    const Scalar r2_cut = rcut*rcut;
+    if (dr2_scalar < r2_cut)
+        {
+        // F = -k x, U = 0.5 k x^2 where r < r_cut
+        d_force[cur_p] = make_scalar4(-k.x*dr.x,
+                                      -k.y*dr.y,
+                                      -k.z*dr.z,
+                                      Scalar(0.5)*dot(k, dr2));
+        }
+    else  
+        {
+        // F = -  0, U = 0.5 k r_cut^2 where r >= r_cut
+        d_force[cur_p] = make_scalar4(-k.x*dr.x,
+                                      -k.y*dr.y,
+                                      -k.z*dr.z,
+                                      Scalar(0.5)*k*rcut*rcut);
+        }
+   
     }
 } // end namespace kernel
 
@@ -89,6 +104,7 @@ cudaError_t compute_position_restraint(Scalar4 *d_force,
                                        const Scalar4 *d_ref_pos,
                                        const unsigned int *d_tag,
                                        const Scalar3& k,
+                                       const Scalar& rcut,
                                        const BoxDim& box,
                                        const unsigned int N,
                                        const unsigned int N_mem,
@@ -120,6 +136,7 @@ cudaError_t compute_position_restraint(Scalar4 *d_force,
                                                                  d_ref_pos,
                                                                  d_tag,
                                                                  k,
+                                                                 rcut,
                                                                  box,
                                                                  N_mem);
     return cudaSuccess;
