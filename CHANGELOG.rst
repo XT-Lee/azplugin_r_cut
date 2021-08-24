@@ -16,13 +16,13 @@ v0.10.2 (24 Aug 2021)
 *Add r_cut for PositionRestrainCompute*
 
   * Restrain.py
-	   Class position(force._force)				  [v]
-    PositionRestraintCompute.cc					   [v]
-    PositionRestraintCompute.h 					   [v]
-    PositionRestraintComputeGPU.cc					[v]
-    PositionRestraintComputeGPU.cu					[v]
-    PositionRestraintComputeGPU.cuh				[v]
-    PositionRestraintComputeGPU.h				  [no changes]
+  *Class position(force._force)				  [v]
+  *PositionRestraintCompute.cc			          [v]
+  *PositionRestraintCompute.h 				  [v]
+  *PositionRestraintComputeGPU.cc			  [v]
+  *PositionRestraintComputeGPU.cu			  [v]
+  *PositionRestraintComputeGPU.cuh			  [v]
+  *PositionRestraintComputeGPU.h			  [no changes]
 
 v0.10.1 (12 Jan 2021)
 ---------------------
