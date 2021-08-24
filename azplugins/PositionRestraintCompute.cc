@@ -127,6 +127,7 @@ void PositionRestraintCompute::computeForces(unsigned int timestep)
         const Scalar dr2_scalar = dr2.x+dr2.y+dr2.z;
         const Scalar r2_cut = m_rcut*m_rcut;
         if (dr2_scalar < r2_cut)
+            {
             const Scalar3 force = make_scalar3(-m_k.x*dr.x, -m_k.y*dr.y, -m_k.z*dr.z);
 
             // F = -k x, U = 0.5 k x^2 where r < r_cut
@@ -134,7 +135,9 @@ void PositionRestraintCompute::computeForces(unsigned int timestep)
                                                force.y,
                                                force.z,
                                                Scalar(0.5)*dot(m_k, dr2));
+            }
         else
+            {
             const Scalar3 force = make_scalar3(Scalar(0.0), Scalar(0.0), Scalar(0.0));
 
             // F = 0, U = 0.5 k r_cut^2 where r >= r_cut
@@ -142,8 +145,9 @@ void PositionRestraintCompute::computeForces(unsigned int timestep)
                                                force.y,
                                                force.z,
                                                Scalar(0.5)*m_k.x*m_rcut*m_rcut);
-        }
-    }
+            }//endif
+        }//endfor
+    }//end computeForces
 
 namespace detail
 {
