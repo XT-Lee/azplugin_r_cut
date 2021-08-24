@@ -54,9 +54,10 @@ class PYBIND11_EXPORT PositionRestraintCompute : public ForceCompute
          * \param ky Force constant in y-direction
          * \param kz Force constant in z-direction
          */
-        void setForceConstant(Scalar kx, Scalar ky, Scalar kz)
+        void setForceConstant(Scalar kx, Scalar ky, Scalar kz, Scalar r_c)
             {
             m_k = make_scalar3(kx, ky, kz);
+            m_rcut = r_c;
             }
 
         //! Sets the reference positions of particles to their current value
@@ -76,6 +77,7 @@ class PYBIND11_EXPORT PositionRestraintCompute : public ForceCompute
         virtual void computeForces(unsigned int timestep);
 
         Scalar3 m_k; //!< Force constants
+        Scalar m_rcut; //!< Force constants
 
         std::shared_ptr<ParticleGroup> m_group;  //!< Group of particles to apply force to
         GPUArray<Scalar4> m_ref_pos;               //!< Reference positions of the particles stored by tag
