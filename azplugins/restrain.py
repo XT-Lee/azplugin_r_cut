@@ -405,7 +405,7 @@ class position(force._force):
 
         Examples::
 
-            springs = azplugins.restrain.position(group=hoomd.group.all(), k=1.0)
+            springs = azplugins.restrain.position(group=hoomd.group.all(), k=1.0, r_cut=1000.0)
             lattice = numpy.random.rand(N,3)
             springs.set_reference_positions(lattice)
 
@@ -432,7 +432,7 @@ class position(force._force):
 
         Examples::
 
-            springs = azplugins.restrain.position(group=hoomd.group.all(), k=1.0, r)
+            springs = azplugins.restrain.position(group=hoomd.group.all(), k=1.0, r_cut=1000.0)
             lattice = [1., 2., 3.]
             springs.set_reference_position(0,lattice)
 
