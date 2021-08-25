@@ -54,10 +54,10 @@ class PYBIND11_EXPORT PositionRestraintCompute : public ForceCompute
          * \param ky Force constant in y-direction
          * \param kz Force constant in z-direction
          */
-        void setForceConstant(Scalar kx, Scalar ky, Scalar kz, Scalar r_c)
+        void setForceConstant(Scalar kx, Scalar ky, Scalar kz, Scalar rcut)
             {
             m_k = make_scalar3(kx, ky, kz);
-            m_rcut = r_c;
+            m_rcut = rcut;
             }
 
         //! Sets the reference positions of particles to their current value
