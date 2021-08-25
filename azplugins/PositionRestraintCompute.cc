@@ -144,7 +144,7 @@ void PositionRestraintCompute::computeForces(unsigned int timestep)
             h_force.data[cur_p] = make_scalar4(force.x,
                                                force.y,
                                                force.z,
-                                               Scalar(0.5)*m_k.x*m_rcut*m_rcut);
+                                               Scalar(0.5)*m_k.x*r2_cut);
             }//endif
         }//endfor
     }//end computeForces
