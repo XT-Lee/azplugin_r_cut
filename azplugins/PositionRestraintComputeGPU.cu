@@ -76,7 +76,7 @@ __global__ void compute_position_restraint(Scalar4 *d_force,
         d_force[cur_p] = make_scalar4(-k.x*dr.x,
                                       -k.y*dr.y,
                                       -k.z*dr.z,
-                                      Scalar(0.5)*k*rcut*rcut);
+                                      Scalar(0.5)*k.x*r2_cut);
         }
    
     }
