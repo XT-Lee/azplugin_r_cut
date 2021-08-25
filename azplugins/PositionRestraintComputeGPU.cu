@@ -22,6 +22,7 @@ namespace kernel
  * \param d_ref_pos Particle reference positions
  * \param d_tag Particle tags
  * \param k Field force constant
+ * \param rcut Field force constant
  * \param box Simulation box
  * \param N_mem Number of particles in the group
  *
@@ -88,6 +89,7 @@ __global__ void compute_position_restraint(Scalar4 *d_force,
  * \param d_ref_pos Particle reference positions
  * \param d_tag Particle tags
  * \param k Field force constant
+ * \param rcut Field force constant
  * \param box Simulation box
  * \param N Number of particles
  * \param N_mem Number of particles in the group
