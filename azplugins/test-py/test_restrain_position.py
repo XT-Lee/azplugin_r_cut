@@ -22,22 +22,23 @@ class restrain_position_tests(unittest.TestCase):
 
     # basic test of creation
     def test_basic(self):
-        springs = azplugins.restrain.position(hoomd.group.all(),k=1)
-        springs = azplugins.restrain.position(hoomd.group.all(),k=1.)
-        springs = azplugins.restrain.position(hoomd.group.all(),k=(1,2,3))
-        springs = azplugins.restrain.position(hoomd.group.all(),k=(1.,2.,3.))
+        springs = azplugins.restrain.position(hoomd.group.all(),k=1,r_cut=1000.0)
+        springs = azplugins.restrain.position(hoomd.group.all(),k=1.,r_cut=1000.0)
+        springs = azplugins.restrain.position(hoomd.group.all(),k=(1,2,3),r_cut=1000.0)
+        springs = azplugins.restrain.position(hoomd.group.all(),k=(1.,2.,3.),r_cut=1000.0)
 
     # test creation with bad inputs
     def test_bad_args(self):
-        self.assertRaises(ValueError, azplugins.restrain.position, hoomd.group.all(), k="one")
-        self.assertRaises(ValueError, azplugins.restrain.position, hoomd.group.all(), k=(1.,2,"three"))
+        self.assertRaises(ValueError, azplugins.restrain.position, hoomd.group.all(), k="one", r_cut=1000.0 )
+        self.assertRaises(ValueError, azplugins.restrain.position, hoomd.group.all(), k=(1.,2,"three"), r_cut=1000.0)
 
     # test potential calculation
     def test_potential(self):
         k = 1.
+        r_cut=1000.0
         for i in range(10):
             self.s.particles[i].position = [0.,0.,0.]
-        springs = azplugins.restrain.position(hoomd.group.all(),k=k)
+        springs = azplugins.restrain.position(hoomd.group.all(),k=k,r_cut=r_cut)
         for i in range(10):
             self.s.particles[i].position = [i,i,i]
         # integrator with zero timestep to compute forces
@@ -53,9 +54,10 @@ class restrain_position_tests(unittest.TestCase):
     # test potential calculation with (uneven) tuple
     def test_potential_tuple(self):
         k = (1., 2., 3.)
+        r_cut=1000.0
         for i in range(10):
             self.s.particles[i].position = [0.,0.,0.]
-        springs = azplugins.restrain.position(hoomd.group.all(),k=k)
+        springs = azplugins.restrain.position(hoomd.group.all(),k=k,r_cut=1000.0)
         for i in range(10):
             x = i
             y = int(i/2)
