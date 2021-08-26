@@ -419,7 +419,8 @@ class position(force._force):
             hoomd.context.msg.error('restrain.position.set_reference_positions: ref_pos cannot be cast to ndarray\n')
             raise ValueError('ref_pos cannot be cast to ndarray')
         # append each particle position
-        for i in range(0, len(ref_pos_ndarray.shape)):
+        np=ref_pos_ndarray.shape
+        for i in range(np[0]):
             self.set_position(i,ref_pos_ndarray[i,:])
         hoomd.util.unquiet_status()
 
